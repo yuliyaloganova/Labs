@@ -128,6 +128,14 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
         return y0 + (y1 - y0) * (x - x0) / (x1 - x0);
     }
 
+    protected double interpolate(double x) {
+        int index = searchIndex(x);
+        double x1 = xValues[index];
+        double x2 = xValues[index + 1];
+        double y1 = yValues[index];
+        double y2 = yValues[index + 1];
+        return y1 + (y2 - y1) / (x2 - x1) * (x - x1);
+    }
     private int searchIndex(double x) { // вспомогательная функция поиска икса
         int n = xValues.length;
         if (x < xValues[0]) {
