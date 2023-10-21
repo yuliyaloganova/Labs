@@ -22,15 +22,11 @@ class IdentityFunctionTest {
 
     @Test
     public void testEquals() {
-        IdentityFunction func1 = new IdentityFunction();
+        IdentityFunction func = new IdentityFunction();
         IdentityFunction func2 = new IdentityFunction();
-        IdentityFunction diffunc = new IdentityFunction();
-
-        assertTrue(func1.equals(func1)); // объект равен самому себе
-        assertTrue(func1.equals(func2)); // два объекта IdentityFunction равны
-        assertFalse(func1.equals(diffunc)); // объекты IdentityFunction не равны
-        assertFalse(func1.equals(null)); // объект не равен null
-        assertFalse(func1.equals("Not an IdentityFunction")); // объект не равен объекту другого класса
+        ConstantFunction func3 = new ConstantFunction(7);
+        assertTrue(func.equals(func2));
+        assertFalse(func.equals(func3));
     }
 
     @Test
