@@ -1,219 +1,356 @@
 package ru.ssau.yuliyaloganova.labs.functions;
+import java.util.Arrays;
+import java.util.Objects;
 
-class Node{
-    public Node next;
-    public Node prev;
-    public double x,y;
+public class LinkedListTabulatedFunction extends AbstractTabulatedFunction implements TabulatedFunction {
 
-    Node(double x,double y){
-        this.x=x;
-        this.y=y;
-    }
-}
-public class LinkedListTabulatedFunction extends AbstractTabulatedFunction implements TabulatedFunction{
+    private int count;
     private Node head;
-    protected int count;
-    protected void addNode(double x,double y){
-        Node newNode= new Node(x,y);
-        if (head==null){
-            head=newNode;
-            newNode.next=newNode;
-            newNode.prev=newNode;
+
+    // Вложенный класс Node описывает узел списка
+    static class Node {
+        public double x,y;
+        public Node next;
+        public Node prev;
+
+        public Node(double x, double y) {
+            this.x = x;
+            this.y = y;
+            this.next = null;
+            this.prev = null;
         }
-        else{
-            Node last=head.prev;
-            last.next=newNode;
-            head.prev=newNode;
-            newNode.prev=last;
-            newNode.next=head;
-            ++count;
+
+        public String toString() {
+            StringBuilder str1 = new StringBuilder();
+            str1.append("(").append(x).append("; ").append(y).append(")");
+            return str1.toString();
+        }
+
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            return ((o != null) && (o.getClass() == this.getClass())
+                    && (x == ((LinkedListTabulatedFunction.Node)o).x)
+                    && (y == ((LinkedListTabulatedFunction.Node)o).y));
+        }
+
+        public int hashCode() {
+            int result = 31 * Double.hashCode(x);
+            result = 31 * result + Double.hashCode(y);
+            return result;
+        }
+
+        public Object clone() {
+            Node clone = new Node(x, y);
+            clone.prev = this.prev;
+            clone.next = this.next;
+            return clone;
         }
     }
 
-    public LinkedListTabulatedFunction(double[] xValues,double[] yValues){
-        for(int i=0;i<xValues.length;++i)
-            addNode(xValues[i],yValues[i]);
+    // Метод addNode добавляет новый узел в конец списка
+    public void addNode(double x, double y) {
+        Node node = new Node(x, y);
+        if (head == null) {  // если список пустой, то новый узел становится первым и единственным
+            head = node;
+            head.next = head;
+            head.prev = head;
+        } else { // иначе новый узел в конец списка
+            Node last = head.prev;
+            node.next = head;
+            node.prev = last;
+            last.next = node;
+            head.prev = node;
+        }
+        count++;
     }
 
-    public LinkedListTabulatedFunction(MathFunction source,double xFrom,double xTo, int count){
-        if (xFrom>xTo) {
-            double step = (xFrom - xTo) / (count - 1);
-            for (int i=0;i<count;++i) {
-                addNode((xTo + (i * step)), source.apply(xTo + (i * step)));
-            }
+    // Конструктор принимает два массива значений аргумента и функции и заполняет ими список
+    public LinkedListTabulatedFunction(double[] xValues, double[] yValues) {
+        for (int i = 0; i < xValues.length; i++) {
+            addNode(xValues[i], yValues[i]);
         }
-        else if (xTo > xFrom) {
-            double step = (xTo - xFrom) / count;
-            for (int i = 0; i < count; ++i) {
-                addNode((xFrom + (i * step)), source.apply(xFrom + (i * step)));
-            }
+    }
 
+    /* Конструктор принимает объект MathFunction, начальное и конечное значения аргумента и количество точек
+     и заполняет список значениями функции на равноотстоящих точках на отрезке [xFrom, xTo] */
+    public LinkedListTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) {
+        if (xFrom > xTo) { // если начальное значение больше конечного, меняем их местами
+            double temp = xFrom;
+            xFrom = xTo;
+            xTo = temp;
+        }
+        if (count < 2) {  // если количество точек меньше 2, выбрасываем исключение
+            throw new IllegalArgumentException("count < 2");
+        }
+        double step = (xTo - xFrom) / (count - 1);  // вычисляем расстояние между соседними точками
+        for (int i = 0; i < count; i++) { // заполняем список значениями функции на равноотстоящих точках
+            double x = xFrom + i * step;
+            addNode(x, source.apply(x));
+        }
+    }
+
+    // Метод getNode возвращает узел списка по его индексу
+    private Node getNode(int index) {
+        if (index < 0 || index >= count) { // если индекс выходит за границы списка, выбрасываем исключение
+            throw new IndexOutOfBoundsException("Index out of range: " + index);
+        }
+        if (index < count / 2) {  // если индекс меньше половины размера списка, ищем узел с начала списка
+            Node node = head;
+            for (int i = 0; i < index; i++) {
+                node = node.next;
+            }
+            return node;
+        } else { // иначе ищем узел с конца списка
+            Node node = head.prev;
+            for (int i = count - 1; i > index; i--) {
+                node = node.prev;
+            }
+            return node;
+        }
+    }
+
+    // Метод insert вставляет новый узел в список на нужное место
+    public void insert(double x, double y) {
+        if (head == null) {
+            addNode(x, y);
         } else {
-            for (int i = 0; i < count; ++i) {
-                addNode(xFrom, source.apply(xFrom));
+            Node temp = head.next;
+            for (int i = 0; temp != head ; temp = temp.next) {
+                if(temp.x == x) {
+                    temp.y = y;
+                    temp = head;
+                    ++count;
+                }
+                else if(x >head.prev.x) {
+                    Node newN = new Node(x, y);
+                    head.prev.next = newN;
+                    head.prev = newN;
+                    temp = head;
+                    ++count;
+                }
+                else if (x < temp.x && x > temp.prev.x) {
+                    Node newN = new Node(x, y);
+                    temp.prev.next = newN;
+                    temp.prev = newN;
+                    temp = head;
+                    ++count;
+                }
+                else if (x < head.x) {
+                    Node newN = new Node(x, y);
+                    head.prev.next = newN;
+                    head.prev = newN;
+                    head = newN;
+                    ++count;
+                }
             }
-
         }
     }
+
+    // Метод getCount возвращает количество элементов в списке
     public int getCount() {
         return count;
     }
 
+    // Метод getX возвращает значение аргумента функции по индексу
+    public double getX(int index) {
+        return getNode(index).x;
+    }
+
+    // Метод getY возвращает значение функции по индексу
+    public double getY(int index) {
+        return getNode(index).y;
+    }
+
+    // Метод setY изменяет значение функции по индексу
+    public void setY(int index, double value) {
+        getNode(index).y = value;
+    }
+
+    // Метод indexOfX возвращает индекс первого узла с заданным значением аргумента или -1, если такого узла нет
+    public int indexOfX(double x) {
+        for (int i = 0; i < count; i++) {
+            if (getX(i) == x) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    // Метод indexOfY возвращает индекс первого узла с заданным значением функции или -1, если такого узла нет
+    public int indexOfY(double y) {
+        for (int i = 0; i < count; i++) {
+            if (getY(i) == y) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    // Метод leftBound возвращает значение аргумента первого узла списка.
     public double leftBound() {
         return head.x;
     }
 
+    // Метод rightBound возвращает значение аргумента последнего узла списка.
     public double rightBound() {
         return head.prev.x;
     }
 
-    Node getNode(int index) {
-        if (index == 0) {
-            return head;
-        }
-        Node temp = head;
-        for (int i = 0; i <= index; i++) {
-            temp = temp.next;
-        }
-        return temp.prev;
-    }
-
-    public double getX(int index) {
-        Node temp=getNode(index);
-        return temp.x;
-    }
-
-    public double getY(int index) {
-        Node temp=getNode(index);
-        return temp.y;
-    }
-
-    public void setY(int index, double value) {
-        Node temp=getNode(index);
-        temp.y = value;
-    }
-
-    public  int indexOfX(double x) {
-        int index = 0;
-        int i = 0;
-        Node temp = head;
-        while ((temp.x != x) && (temp != head.prev)) {
-            temp = temp.next;
-            ++index;
-        }
-        if (temp == head.prev) {
-            if (temp.x == x) {
-                return index;
-            } else return -1;
-        } else return index;
-    }
-
-    public int indexOfY(double y) {
-        int index = 0;
-        int i = 0;
-        Node temp = head;
-        while ((temp.y != y) && (temp != head.prev)) {
-            temp = temp.next;
-            ++index;
-        }
-        if (temp == head.prev) {
-            if (temp.y == y) {
-                return index;
-            } else return -1;
-        } else return index;
-    }
-
-    protected int floorIndexOfX(double x) {
-        int index = 0;
-        if (head.x > x) {
-            return 0;
-        }
-        else if (head.prev.x < x) {
-            return count;
-        }
-        else {
-            for (Node temp = head; ; temp = temp.next) {
-                if (temp.x == x) {
-                    return index;
-                }
-                else if (temp.x > x) {
-                    return index - 1;
-                }
-                index++;
-
-            }
-        }
-    }
-
-    protected double interpolate(double x, int floorIndex) {
-        if (head.next == head) {
-            return head.y;
-        }
-        else {
-            double leftX = getX(floorIndex - 1);
-            double rightX = getX(floorIndex);
-            double leftY = getY(floorIndex - 1);
-            double rightY = getY(floorIndex);
-            return interpolate(x, leftX, rightX, leftY, rightY);
-        }
-
-    }
-
-    protected double extrapolateLeft(double x) {
-        if (head.next == head) {
-            return head.y;
-        }
-        else
-            return (head.y + (((head.prev.y - head.y) / (head.prev.x - head.x)) * (x - head.x)));
-    }
-
-    protected double extrapolateRight(double x) {
-        if (head.next == head) {
-            return head.y;
-        }
-        else
-            return (head.prev.prev.y + (((head.prev.y - head.prev.prev.y) / (head.prev.x - head.prev.prev.x)) * (x - head.prev.prev.x)));
-    }
-
-    protected double interpolate(double x, double leftX, double rightX, double leftY, double rightY) {
-        if (head.next == head) {
-            return head.y;
-        }
-        else
-            return (leftY + (((rightY - leftY) / (rightX - leftX)) * (x - leftX)));
-    }
-
+    // Метод apply вычисляет значение функции в точке x методом линейной интерполяции между ближайшими узлами.
     public double apply(double x) {
-        double result;
-        if (x < head.x) {
-            result = extrapolateLeft(x);
+        //Node floorNode = floorNodeOfX(x);
+        if (x < head.x) { // Если x меньше значения аргумента первого узла списка, то используется метод extrapolateLeft.
+            return extrapolateLeft(x);
+        } else if (x > head.prev.x) { // Если x больше значения аргумента последнего узла списка, то используется метод extrapolateRight.
+            return extrapolateRight(x);
+        } else if (floorNodeOfX(x).x == x) { // Если найден узел списка с аргументом, равным x, то возвращается значение его функции.
+            return floorNodeOfX(x).y;
+        } else { // В остальных случаях вычисляется значение функции методом interpolate между ближайшими узлами.
+            return interpolate(x, floorIndexOfX(x));
         }
-        else if (x > head.prev.x) {
-            result = extrapolateRight(x);
+    }
+
+    /* Метод interpolate вычисляет значение функции в точке x методом линейной интерполяции между узлами
+    с индексами floorNode и floorNode.next, если floorNode не равен null и имеет следующий узел.
+    Иначе выбрасывается исключение IllegalArgumentException. */
+    public double interpolate(double x, int floorIndex) {
+        Node floorNode = floorNodeOfX(x);
+        if (floorNode == null || floorNode.next == null) {
+            throw new IllegalArgumentException("Node is not valid for interpolation");
         }
-        else {
-            if (indexOfX(x) != -1) {
-                result = getY(indexOfX(x));
+        if (floorIndex < 0 || floorIndex >= getCount() - 1) {
+            throw new IllegalArgumentException("Index out of range: " + floorIndex);
+        }
+        double x1 = floorNode.x;
+        double y1 = floorNode.y;
+        double x2 = floorNode.next.x;
+        double y2 = floorNode.next.y;
+        return y1 + (y2 - y1) * (x - x1) / (x2 - x1);
+    }
+
+    // Метод extrapolateLeft вычисляет значение функции в точке x методом экстраполяции слева на основе первых двух узлов.
+    public double extrapolateLeft(double x) {
+        if (getCount() < 2) {
+            return getY(0);
+        }
+        double x1 = getX(0);
+        double y1 = getY(0);
+        double x2 = getX(1);
+        double y2 = getY(1);
+        return y1 + (y2 - y1) * (x - x1) / (x2 - x1);
+    }
+
+    // Метод extrapolateRight вычисляет значение функции в точке x методом экстраполяции справа на основе последних двух узлов.
+    public double extrapolateRight(double x) {
+        if (getCount() < 2) {
+            return getY(0);
+        }
+        double x1 = getX(getCount() - 2);
+        double y1 = getY(getCount() - 2);
+        double x2 = getX(getCount() - 1);
+        double y2 = getY(getCount() - 1);
+        return y2 + (y2 - y1) * (x - x2) / (x2 - x1);
+    }
+
+    // Метод floorIndexOfX возвращает индекс узла списка с максимальным значением аргумента, которое не превышает x.
+    public int floorIndexOfX(double x) {
+        if (x < leftBound()) {
+            return -1;
+        }
+        if (x > rightBound()) {
+            return getCount() - 2;
+        }
+        int i = 0;
+        while (getX(i) < x) {
+            i++;
+            if (i == getCount()) {
+                return getCount() - 1;
             }
-            else {
-                result = interpolate(x, floorIndexOfX(x));
+        }
+        return i - 1;
+    }
+
+    // Метод floorNodeOfX ищет узел списка с аргументом, меньшим или равным заданному значению x.
+    // prevNode - предыдущий узел списка.
+    // currentNode - текущий узел списка.
+    protected Node floorNodeOfX(double x) {
+        Node prevNode = null;
+        Node currentNode = head;
+        while (currentNode != null) {
+            if (currentNode.x <= x) { // если значение аргумента текущего узла меньше или равно заданному значению x
+                prevNode = currentNode; // запоминаем текущий узел как предыдущий
+                currentNode = currentNode.next; // переходим к следующему узлу
+            } else { // если значение аргумента текущего узла больше заданного значения x
+                return (prevNode != null) ? prevNode : new Node(x, 0);  // возвращаем предыдущий узел, если он есть, иначе создаем новый узел
             }
         }
+        return new Node(x, count); // если список пуст, возвращаем новый узел с функцией, равной количеству узлов в списке
+    }
+
+    // Метод remove удаляет узел списка с заданным индексом.
+    public void remove(int index) {
+        if (count == 1) { // Если список содержит только один узел, он удаляется полностью.
+            head = null;
+        } else {
+            Node node = getNode(index); // Получаем узел с заданным индексом.
+            node.prev.next = node.next; // Смещаем соседние узлы
+            node.next.prev = node.prev;
+            if (node == head) { // Если это был первый узел, то следующий теперь головной
+                head = node.next;
+            }
+        }
+        count--; // Уменьшаем кол-во элементов
+    }
+
+    public String toString() {
+        StringBuilder str1 = new StringBuilder(); // создаем объект StringBuilder для построения строки
+        Node current = head;
+        for (int i = 0; i < count; i++) {
+            String node = current.toString();
+            str1.append(node).append(", ");
+            current = current.next;
+        }
+        str1.delete(str1.length() - 2, str1.length()); // удаляем последнюю запятую и пробел
+        return str1.toString();
+    }
+
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        Node node = head;  // Получаем первый узел списка
+        if (o.getClass() == o.getClass() && count == ((LinkedListTabulatedFunction)o).getCount()) {
+            Node othernode = ((LinkedListTabulatedFunction)o).getNode(0); // Получаем первый узел другого списка
+            // Сравниваем каждый узел текущего списка с соответствующим узлом другого списка
+            do {
+                if (!node.equals(othernode)) return false;
+                node = node.next;
+                othernode = othernode.next;
+            } while (node != head);
+            return true;
+        }
+        return false;
+    }
+
+    public int hashCode() {
+        int result = 0; // инициализируем переменную результатом
+        for (Node temp = head; temp != head.prev; temp = temp.next) {
+
+            result = result * 31 + temp.hashCode();
+        }
+        result = result * 31 + head.prev.hashCode(); // вычисляем хеш-код для последнего узла и добавляем его к результату
         return result;
     }
 
-    public void remove(int index) {
-        Node temp = head;
-        Node prev = null;
-        if (temp != null && temp.x == getX(index) && temp.y == getY(index)) {
-            head = temp.next;
-            return;
+    public Object clone() {
+        double[] xValues = new double[count];
+        double[] yValues = new double[count];
+        int i = 0;
+        for (Node temp = head; temp != head.prev; temp = temp.next) {
+            xValues[i] = temp.x;
+            yValues[i] = temp.y;
+            i++;
         }
-        while (temp != null && temp.x != getX(index) && temp.y != getY(index)) {
-            prev = temp;
-            temp = temp.next;
-        }
-        if (temp == head) return;
-        prev.next = temp.next;
+        xValues[count - 1] = head.prev.x; // добавляем координату x последнего узла в массив
+        yValues[count - 1] = head.prev.y; // добавляем координату y последнего узла в массив
+        return new LinkedListTabulatedFunction(xValues, yValues);
     }
 }
