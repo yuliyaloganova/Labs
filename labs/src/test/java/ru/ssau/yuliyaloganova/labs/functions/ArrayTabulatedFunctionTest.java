@@ -3,6 +3,9 @@ package ru.ssau.yuliyaloganova.labs.functions;
 import org.junit.Assert;
 import org.junit.Test;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 public class ArrayTabulatedFunctionTest {
 
     @Test
@@ -92,6 +95,46 @@ public class ArrayTabulatedFunctionTest {
         double[] xValues = {1.0, 2.0, 3.0};
         double[] yValues = {4.0, 5.0, 6.0};
         return new ArrayTabulatedFunction(xValues, yValues);
+    }
+
+    @Test
+    public void toStringTest() {
+        ArrayTabulatedFunction f = createFunction();
+        Assert.assertEquals("[ 1.0, 4.0 ] [ 2.0, 5.0 ] [ 3.0, 6.0 ] ", f.toString());
+    }
+
+    @Test
+    public void testEquals(){
+        double[] xValues1 = {1.0, 2.0, 3.0};
+        double[] yValues1 = {4.0, 5.0, 6.0};
+        ArrayTabulatedFunction function1 = new ArrayTabulatedFunction(xValues1, yValues1);
+
+        double[] xValues2 = {1.0, 2.0, 3.0};
+        double[] yValues2 = {4.0, 5.0, 6.0};
+        ArrayTabulatedFunction function2 = new ArrayTabulatedFunction(xValues2, yValues2);
+
+        double[] xValues3 = {1.0, 2.0, 3.0};
+        double[] yValues3 = {6.0, 7.0, 8.0};
+        ArrayTabulatedFunction function3 = new ArrayTabulatedFunction(xValues3, yValues3);
+
+        assertTrue(function1.equals(function1)); // объект равен самому себе
+        assertTrue(function1.equals(function2)); // два объекта с одинаковыми значениями равны
+        assertFalse(function1.equals(function3)); // объекты с разными значениями не равны
+        assertFalse(function1.equals(null)); // объект не равен null
+        assertFalse(function1.equals("Not an ArrayTabulatedFunction")); // объект не равен объекту другого класса
+    }
+
+    @Test
+    public void testHashCode() {
+        ArrayTabulatedFunction f = createFunction();
+        ArrayTabulatedFunction f2 = createFunction();
+        Assert.assertEquals(f.hashCode(), f2.hashCode());
+    }
+    @Test
+    public void testClone() throws CloneNotSupportedException {
+        ArrayTabulatedFunction func = createFunction();
+        ArrayTabulatedFunction func2 = (ArrayTabulatedFunction) func.clone();
+        Assert.assertEquals(func, func2);
     }
 
 }
