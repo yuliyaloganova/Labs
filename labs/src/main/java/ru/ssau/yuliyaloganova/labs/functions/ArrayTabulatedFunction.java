@@ -1,6 +1,7 @@
 package ru.ssau.yuliyaloganova.labs.functions;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 // класс табулированных функций, значения которых хранятся в массиве
 public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
@@ -10,9 +11,6 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
 
     // конструктор
     public ArrayTabulatedFunction(double[] xValues, double[] yValues) {
-        if (xValues.length != yValues.length) { //обработка исключений
-            throw new IllegalArgumentException("The length of xValues and yValues must be the same");
-        }
         this.xValues = Arrays.copyOf(xValues, xValues.length);
         this.yValues = Arrays.copyOf(yValues, yValues.length);
         this.count = xValues.length;
@@ -169,5 +167,41 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
         double y1 = yValues[index];
         double y2 = yValues[index + 1];
         return y2 + (y2 - y1) / (x2 - x1) * (x - x2);
+    }
+
+    @Override
+    public String toString() {//Метод, возвращающий напечатанный массив
+        String mass = "";
+        for (int i=0; i < count; i++) {
+            String x = String.valueOf(xValues[i]);
+            String y = String.valueOf(yValues[i]);
+            mass += "[ " + x + ", " + y + " ] ";
+        }
+        return mass;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if (this == o)
+            return true;
+
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        ArrayTabulatedFunction other = (ArrayTabulatedFunction) o;
+        return (Arrays.equals(xValues, other.xValues) && Arrays.equals(yValues, other.yValues));
+    }
+
+    @Override
+    public int hashCode(){
+        int res = Objects.hash(count);
+        res = 31 * res + Arrays.hashCode(xValues);
+        res = 31 * res + Arrays.hashCode(yValues);
+        return res;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException{
+        return new ArrayTabulatedFunction(xValues.clone(), yValues.clone());
     }
 }
