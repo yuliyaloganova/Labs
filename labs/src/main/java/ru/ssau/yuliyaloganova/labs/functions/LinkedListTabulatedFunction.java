@@ -2,7 +2,7 @@ package ru.ssau.yuliyaloganova.labs.functions;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
-import ru.ssau.yuliyaloganova.labs.exceptions.InterpolationException;
+
 public class LinkedListTabulatedFunction extends AbstractTabulatedFunction implements TabulatedFunction {
 
     private int count;
@@ -12,7 +12,6 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
     public Iterator<Point> iterator() {
         return null;
     }
-
 
     // Вложенный класс Node описывает узел списка
     static class Node {
@@ -37,13 +36,15 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
             if (this == o)
                 return true;
 
-            //  if (o == null || getClass() != o.getClass())
-             //   return false;
+            if (o == null || getClass() != o.getClass())
+               return false;
 
             return ((o != null) && (o.getClass() == this.getClass())
                     && (x == ((LinkedListTabulatedFunction.Node)o).x)
                     && (y == ((LinkedListTabulatedFunction.Node)o).y));
         }
+
+
         @Override
         public int hashCode() {
             int result = 31 * Double.hashCode(x);
@@ -172,19 +173,31 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
     // Метод getX возвращает значение аргумента функции по индексу
     @Override
     public double getX(int index) {
-        return getNode(index).x;
+        if (index < 0 || index > count - 1) {
+            throw new IllegalArgumentException("Индекс не пренадлежит нужному промежутку");
+        } else {
+            return getNode(index).x;
+        }
     }
 
     // Метод getY возвращает значение функции по индексу
     @Override
     public double getY(int index) {
-        return getNode(index).y;
+        if (index < 0 && index > count - 1) {
+            throw new IllegalArgumentException("Индекс не прендлежит нужному промежутку");
+        } else {
+            return getNode(index).y;
+        }
     }
 
     @Override
     // Метод setY изменяет значение функции по индексу
     public void setY(int index, double value) {
-        getNode(index).y = value;
+        if (index < 0 && index > count - 1) {
+            throw new IllegalArgumentException("Индекс не прендлежит нужному промежутку");
+        } else {
+            getNode(index).y = value;
+        }
     }
 
     // Метод indexOfX возвращает индекс первого узла с заданным значением аргумента или -1, если такого узла нет
@@ -240,14 +253,14 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         if (floorNode == null || floorNode.next == null) {
             throw new IllegalArgumentException("Node is not valid for interpolation");
         }
-        if (x <= floorIndex && x >= floorIndex - 1) {
-            double x1 = floorNode.x;
-            double y1 = floorNode.y;
-            double x2 = floorNode.next.x;
-            double y2 = floorNode.next.y;
-            return y1 + (y2 - y1) * (x - x1) / (x2 - x1);
-        } else throw new InterpolationException("x is outside the interpolation interval");
-
+        if (floorIndex < 0 || floorIndex >= getCount() - 1) {
+            throw new IllegalArgumentException("Index out of range: " + floorIndex);
+        }
+        double x1 = floorNode.x;
+        double y1 = floorNode.y;
+        double x2 = floorNode.next.x;
+        double y2 = floorNode.next.y;
+        return y1 + (y2 - y1) * (x - x1) / (x2 - x1);
     }
 
     // Метод extrapolateLeft вычисляет значение функции в точке x методом экстраполяции слева на основе первых двух узлов.
@@ -277,7 +290,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
     // Метод floorIndexOfX возвращает индекс узла списка с максимальным значением аргумента, которое не превышает x.
     public int floorIndexOfX(double x) {
         if (x < leftBound()) {
-            return -1;
+            throw new IllegalArgumentException("x is less than the left bound");
         }
         if (x > rightBound()) {
             return getCount() - 2;
@@ -296,14 +309,18 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
     // prevNode - предыдущий узел списка.
     // currentNode - текущий узел списка.
     protected Node floorNodeOfX(double x) {
+        if (x < leftBound()) {
+            throw new IllegalArgumentException("Значение x меньше левой границы");
+        }
+
         Node prevNode = null;
         Node currentNode = head;
         while (currentNode != null) {
-            if (currentNode.x <= x) { // если значение аргумента текущего узла меньше или равно заданному значению x
-                prevNode = currentNode; // запоминаем текущий узел как предыдущий
-                currentNode = currentNode.next; // переходим к следующему узлу
-            } else { // если значение аргумента текущего узла больше заданного значения x
-                return (prevNode != null) ? prevNode : new Node(x, 0);  // возвращаем предыдущий узел, если он есть, иначе создаем новый узел
+            if (currentNode.x <= x) {
+                prevNode = currentNode;
+                currentNode = currentNode.next;
+            } else {
+                return (prevNode != null) ? prevNode : new Node(x, 0);
             }
         }
         return new Node(x, count); // если список пуст, возвращаем новый узел с функцией, равной количеству узлов в списке
@@ -323,7 +340,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         }
         count--; // Уменьшаем кол-во элементов
     }
-
+    @Override
     public String toString() {
         StringBuilder str1 = new StringBuilder(); // создаем объект StringBuilder для построения строки
         Node current = head;
@@ -336,6 +353,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         return str1.toString();
     }
 
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         Node node = head;  // Получаем первый узел списка
@@ -352,6 +370,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         return false;
     }
 
+    @Override
     public int hashCode() {
         int result = 0; // инициализируем переменную результатом
         for (Node temp = head; temp != head.prev; temp = temp.next) {
@@ -361,7 +380,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         result = result * 31 + head.prev.hashCode(); // вычисляем хеш-код для последнего узла и добавляем его к результату
         return result;
     }
-
+    @Override
     public Object clone() {
         double[] xValues = new double[count];
         double[] yValues = new double[count];
