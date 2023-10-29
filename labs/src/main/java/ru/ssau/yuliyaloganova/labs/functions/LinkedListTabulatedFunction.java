@@ -25,20 +25,25 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
             str1.append("(").append(x).append("; ").append(y).append(")");
             return str1.toString();
         }
-
+        @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
+            if (this == o)
+                return true;
+
+            //  if (o == null || getClass() != o.getClass())
+             //   return false;
+
             return ((o != null) && (o.getClass() == this.getClass())
                     && (x == ((LinkedListTabulatedFunction.Node)o).x)
                     && (y == ((LinkedListTabulatedFunction.Node)o).y));
         }
-
+        @Override
         public int hashCode() {
             int result = 31 * Double.hashCode(x);
             result = 31 * result + Double.hashCode(y);
             return result;
         }
-
+        @Override
         public Object clone() {
             Node clone = new Node(x, y);
             clone.prev = this.prev;
@@ -152,21 +157,25 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
     }
 
     // Метод getX возвращает значение аргумента функции по индексу
+    @Override
     public double getX(int index) {
         return getNode(index).x;
     }
 
     // Метод getY возвращает значение функции по индексу
+    @Override
     public double getY(int index) {
         return getNode(index).y;
     }
 
+    @Override
     // Метод setY изменяет значение функции по индексу
     public void setY(int index, double value) {
         getNode(index).y = value;
     }
 
     // Метод indexOfX возвращает индекс первого узла с заданным значением аргумента или -1, если такого узла нет
+    @Override
     public int indexOfX(double x) {
         for (int i = 0; i < count; i++) {
             if (getX(i) == x) {
