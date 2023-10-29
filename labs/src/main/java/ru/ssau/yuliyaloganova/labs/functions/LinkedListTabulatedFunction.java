@@ -1,11 +1,18 @@
 package ru.ssau.yuliyaloganova.labs.functions;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Objects;
-
+import ru.ssau.yuliyaloganova.labs.exceptions.InterpolationException;
 public class LinkedListTabulatedFunction extends AbstractTabulatedFunction implements TabulatedFunction {
 
     private int count;
     private Node head;
+
+    @Override
+    public Iterator<Point> iterator() {
+        return null;
+    }
+
 
     // Вложенный класс Node описывает узел списка
     static class Node {
@@ -71,8 +78,14 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
 
     // Конструктор принимает два массива значений аргумента и функции и заполняет ими список
     public LinkedListTabulatedFunction(double[] xValues, double[] yValues) {
-        for (int i = 0; i < xValues.length; i++) {
-            addNode(xValues[i], yValues[i]);
+        if (xValues.length < 2) {
+            throw new IllegalArgumentException("Длина меньше минимальной");
+        } else {
+            checkLengthIsTheSame(xValues, yValues);
+            checkSorted(xValues);
+            for (int i = 0; i < xValues.length; ++i) {
+                addNode(xValues[i], yValues[i]);
+            }
         }
     }
 
@@ -227,14 +240,14 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         if (floorNode == null || floorNode.next == null) {
             throw new IllegalArgumentException("Node is not valid for interpolation");
         }
-        if (floorIndex < 0 || floorIndex >= getCount() - 1) {
-            throw new IllegalArgumentException("Index out of range: " + floorIndex);
-        }
-        double x1 = floorNode.x;
-        double y1 = floorNode.y;
-        double x2 = floorNode.next.x;
-        double y2 = floorNode.next.y;
-        return y1 + (y2 - y1) * (x - x1) / (x2 - x1);
+        if (x <= floorIndex && x >= floorIndex - 1) {
+            double x1 = floorNode.x;
+            double y1 = floorNode.y;
+            double x2 = floorNode.next.x;
+            double y2 = floorNode.next.y;
+            return y1 + (y2 - y1) * (x - x1) / (x2 - x1);
+        } else throw new InterpolationException("x is outside the interpolation interval");
+
     }
 
     // Метод extrapolateLeft вычисляет значение функции в точке x методом экстраполяции слева на основе первых двух узлов.

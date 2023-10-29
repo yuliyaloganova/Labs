@@ -1,8 +1,9 @@
 package ru.ssau.yuliyaloganova.labs.functions;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Objects;
-
+import ru.ssau.yuliyaloganova.labs.exceptions.InterpolationException;
 // класс табулированных функций, значения которых хранятся в массиве
 public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
     private double[] xValues; // приватное поле значений x
@@ -11,11 +12,16 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
 
     // конструктор
     public ArrayTabulatedFunction(double[] xValues, double[] yValues) {
-        this.xValues = Arrays.copyOf(xValues, xValues.length);
-        this.yValues = Arrays.copyOf(yValues, yValues.length);
-        this.count = xValues.length;
+        if (xValues.length < 2 || yValues.length < 2) {
+            throw new IllegalArgumentException("length less than minimum");
+        } else {
+            checkLengthIsTheSame(xValues, yValues);
+            checkSorted(xValues);
+            this.xValues = Arrays.copyOf(xValues, xValues.length);
+            this.yValues = Arrays.copyOf(yValues, yValues.length);
+            this.count = xValues.length;
+        }
     }
-
     // конструктор
     public ArrayTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) {
         if (xFrom > xTo) { // меняем местами, если левая граница интервала больше правой
@@ -116,14 +122,17 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
 
     @Override
     public double interpolate(double x, int floorIndex) {
-        if (floorIndex < 0 || floorIndex >= count - 1) {
-            throw new IllegalArgumentException("Index is out of range");
-        }
-        double x0 = xValues[floorIndex];
-        double x1 = xValues[floorIndex + 1];
-        double y0 = yValues[floorIndex];
-        double y1 = yValues[floorIndex + 1];
-        return y0 + (y1 - y0) * (x - x0) / (x1 - x0);
+        if (x<floorIndex && x> floorIndex - 1) {
+            if (count == 1) {
+                return yValues[0];
+            } else {
+                double x0 = xValues[floorIndex];
+                double x1 = xValues[floorIndex + 1];
+                double y0 = yValues[floorIndex];
+                double y1 = yValues[floorIndex + 1];
+                return y0 + (y1 - y0) * (x - x0) / (x1 - x0);
+            }
+        } else throw new InterpolationException("x is outside the interpolation interval");
     }
 
     protected double interpolate(double x) {
@@ -203,5 +212,10 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
     @Override
     public Object clone() throws CloneNotSupportedException{
         return new ArrayTabulatedFunction(xValues.clone(), yValues.clone());
+    }
+
+    @Override
+    public Iterator<Point> iterator() {
+        return null;
     }
 }
