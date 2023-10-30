@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
 import ru.ssau.yuliyaloganova.labs.exceptions.InterpolationException;
+import java.util.NoSuchElementException;
 // класс табулированных функций, значения которых хранятся в массиве
 public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
     private double[] xValues; // приватное поле значений x
@@ -216,6 +217,22 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
 
     @Override
     public Iterator<Point> iterator() {
-        throw new UnsupportedOperationException("Iterator is not supported");
+        return new Iterator<Point>() {
+            private int i = 0;
+
+            @Override
+            public boolean hasNext() {
+                return (i < count);
+            }
+
+            @Override
+            public Point next() {
+                if (hasNext()) {
+                    Point point = new Point(xValues[i], yValues[i]);
+                    ++i;
+                    return point;
+                } else throw new NoSuchElementException();
+            }
+        };
     }
 }
