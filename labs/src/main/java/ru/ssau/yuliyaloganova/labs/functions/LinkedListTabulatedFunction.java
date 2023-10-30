@@ -8,10 +8,6 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
     private int count;
     private Node head;
 
-    @Override
-    public Iterator<Point> iterator() {
-        return null;
-    }
 
     // Вложенный класс Node описывает узел списка
     static class Node {
@@ -393,5 +389,9 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         xValues[count - 1] = head.prev.x; // добавляем координату x последнего узла в массив
         yValues[count - 1] = head.prev.y; // добавляем координату y последнего узла в массив
         return new LinkedListTabulatedFunction(xValues, yValues);
+    }
+    @Override
+    public Iterator<Point> iterator() {
+        throw new UnsupportedOperationException("Iterator is not supported");
     }
 }

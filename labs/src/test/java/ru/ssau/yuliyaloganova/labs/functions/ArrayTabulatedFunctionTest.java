@@ -2,17 +2,24 @@ package ru.ssau.yuliyaloganova.labs.functions;
 
 import org.junit.Assert;
 import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class ArrayTabulatedFunctionTest {
+import ru.ssau.yuliyaloganova.labs.exceptions.ArrayIsNotSortedException;
+import ru.ssau.yuliyaloganova.labs.exceptions.DifferentLengthOfArraysException;
+import ru.ssau.yuliyaloganova.labs.exceptions.InterpolationException;
 
+public class ArrayTabulatedFunctionTest {
+    double[] xValues = {1.0, 2.0, 3.0};
+    double[] yValues = {4.0, 5.0, 6.0};
+    ArrayTabulatedFunction function = new ArrayTabulatedFunction(xValues, yValues);
     @Test
     public void testConstructorWithArrays() {
-        double[] xValues = {1.0, 2.0, 3.0};
-        double[] yValues = {4.0, 5.0, 6.0};
-        ArrayTabulatedFunction function = new ArrayTabulatedFunction(xValues, yValues);
+
         Assert.assertEquals(3, function.getCount());
         Assert.assertEquals(1.0, function.getX(0), 0.0);
         Assert.assertEquals(4.0, function.getY(0), 0.0);
@@ -135,6 +142,124 @@ public class ArrayTabulatedFunctionTest {
         ArrayTabulatedFunction func = createFunction();
         ArrayTabulatedFunction func2 = (ArrayTabulatedFunction) func.clone();
         Assert.assertEquals(func, func2);
+    }
+
+    @Test
+    public void ArrayTwoTestException() {
+        boolean exceptionThrown = false;
+        double[] xValue2 = {5};
+        double[] yValue2 = {2};
+        try {
+            ArrayTabulatedFunction arrTabulatedFunction2 = new ArrayTabulatedFunction(xValue2, yValue2);
+        } catch (IllegalArgumentException exception) {
+            exceptionThrown = true;
+        }
+        assertTrue(exceptionThrown);
+    }
+
+
+    @Test
+    public void getXException() {
+        boolean exceptionThrown = false;
+
+        try {
+            function.getX(10);
+        } catch (IllegalArgumentException exception) {
+            exceptionThrown = true;
+        }
+        assertTrue(exceptionThrown);
+    }
+
+    @Test
+    public void getYException() {
+        boolean exceptionThrown = false;
+
+        try {
+            function.getY(-10);
+        } catch (IllegalArgumentException exception) {
+            exceptionThrown = true;
+        }
+        assertTrue(exceptionThrown);
+    }
+
+    @Test
+    public void setYException() {
+        boolean exceptionThrown = false;
+
+        try {
+            function.setY(13, 10);
+        } catch (IllegalArgumentException exception) {
+            exceptionThrown = true;
+        }
+        assertTrue(exceptionThrown);
+    }
+
+    @Test
+    public void indexOfXException() {
+        boolean exceptionThrown = false;
+
+        try {
+            function.indexOfX(2.21);
+        } catch (NoSuchElementException exception) {
+            exceptionThrown = true;
+        }
+        assertTrue(exceptionThrown);
+    }
+
+    @Test
+    public void floorIndexOfXException() {
+        boolean exceptionThrown = false;
+
+        try {
+            function.floorIndexOfX(-2);
+        } catch (IllegalArgumentException exception) {
+            exceptionThrown = true;
+        }
+        assertTrue(exceptionThrown);
+    }
+
+    @Test
+    public void ArrayTabulatedFunctionLengthException() {
+        double[] xValue2 = {5, 6, 5};
+        double[] yValue2 = {2, 6, 7, 95};
+        assertThrows(DifferentLengthOfArraysException.class, () -> {
+            ArrayTabulatedFunction function2 = new ArrayTabulatedFunction(xValue2, yValue2);
+        });
+    }
+
+    @Test
+    public void ArrayTabulatedFunctionSortedException() {
+        double[] xValue5 = {2, 3, 4, 17, 3, 45, 0};
+        double[] yValue5 = {2, 34, 5, 56, 7, 6, 5};
+        assertThrows(ArrayIsNotSortedException.class, () -> {
+            ArrayTabulatedFunction function3 = new ArrayTabulatedFunction(xValue5, yValue5);
+        });
+    }
+
+    @Test
+    public void interpolateTestException() {
+        assertThrows(InterpolationException.class, () -> {
+            function.interpolate(2.5, 2);
+        });
+    }
+
+    @Test
+    public void arrayTabulatedIteratorTestException() {
+        Iterator<Point> iterator = function.iterator();
+        int i = 0;
+        while (iterator.hasNext()) {
+            Point point = iterator.next();
+            assertEquals(xValues[i], point.x);
+            assertEquals(yValues[i], point.y);
+            ++i;
+        }
+        i = 0;
+        for (Point point : function) {
+            assertEquals(xValues[i], point.x);
+            assertEquals(yValues[i], point.y);
+            ++i;
+        }
+
     }
 
 }

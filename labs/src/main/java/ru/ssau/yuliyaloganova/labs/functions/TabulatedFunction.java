@@ -1,5 +1,6 @@
 package ru.ssau.yuliyaloganova.labs.functions;
 
+import java.util.Iterator;
 public interface TabulatedFunction extends MathFunction, Iterable<Point> {
     int getCount(); //Метод получения количества табулированных значений
     double getX(int index); //Метод, получающий значение аргумента x по номеру индекса
@@ -9,4 +10,5 @@ public interface TabulatedFunction extends MathFunction, Iterable<Point> {
     int indexOfY(double y); //Метод, возвращающий индекс первого вхождения значения y
     double leftBound(); //Метод, возвращающий самый левый x
     double rightBound(); //Метод, возвращающий самый правый x
+
 }
