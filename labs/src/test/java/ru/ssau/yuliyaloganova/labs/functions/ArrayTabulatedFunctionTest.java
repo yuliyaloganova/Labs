@@ -244,7 +244,7 @@ public class ArrayTabulatedFunctionTest {
     }
 
     @Test
-    public void arrayTabulatedIteratorTestException() {
+    public void IteratorTestException() {
         Iterator<Point> iterator = function.iterator();
         int i = 0;
         while (iterator.hasNext()) {
