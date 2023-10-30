@@ -1,5 +1,7 @@
 package ru.ssau.yuliyaloganova.labs.functions;
 
+import java.util.Iterator;
+
 // mock-объект для последующего тестирования класса абстрактных табулированных функций
 public class MockTabulatedFunction extends AbstractTabulatedFunction {
     private final double x0;
@@ -100,5 +102,10 @@ public class MockTabulatedFunction extends AbstractTabulatedFunction {
     public double interpolate(double x, int floorIndex) {
         double k = (y1 - y0) / (x1 - x0);
         return y0 + k * (x - x0);
+    }
+
+    @Override
+    public Iterator<Point> iterator() {
+        return null;
     }
 }
