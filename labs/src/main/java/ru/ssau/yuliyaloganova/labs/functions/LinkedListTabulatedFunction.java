@@ -1,6 +1,7 @@
 package ru.ssau.yuliyaloganova.labs.functions;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 public class LinkedListTabulatedFunction extends AbstractTabulatedFunction implements TabulatedFunction {
@@ -390,8 +391,26 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         yValues[count - 1] = head.prev.y; // добавляем координату y последнего узла в массив
         return new LinkedListTabulatedFunction(xValues, yValues);
     }
+
     @Override
     public Iterator<Point> iterator() {
-        throw new UnsupportedOperationException("Iterator is not supported");
+        return new Iterator<Point>() {
+            private Node node = head;
+
+            @Override
+            public boolean hasNext() {
+                return node != null;
+            }
+
+            @Override
+            public Point next() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException("No more elements in the iterator");
+                }
+                Point point = new Point(node.x, node.y);
+                node = node.next;
+                return point;
+            }
+        };
     }
 }
