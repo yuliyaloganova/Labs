@@ -48,7 +48,7 @@ public class TabulatedFunctionOperationService {
             Point[] arraysB = asPoints(b);
 
             double[] xValue = new double[a.getCount()];
-            double[] yValue = new double[a.getCount()];
+            double[] yValue = new double[b.getCount()];
 
             for (int i = 0; i < a.getCount(); i++) {
                 if (arraysA[i].x == arraysB[i].x) xValue[i] = arraysA[i].x;
@@ -67,4 +67,21 @@ public class TabulatedFunctionOperationService {
         BiOperation operation = (u, v) -> u - v;
         return doOperation(firstFunction, secondFunction, operation);
     }
+
+    public TabulatedFunction multiply(TabulatedFunction firstFunction, TabulatedFunction secondFunction) {
+        BiOperation operation = (u, v) -> u * v;
+        return doOperation(firstFunction, secondFunction, operation);
+    }
+
+    public TabulatedFunction divide(TabulatedFunction firstFunction, TabulatedFunction secondFunction) {
+        BiOperation operation = (u, v) -> {
+            if (v != 0) {
+                return u / v;
+            } else {
+                throw new ArithmeticException("Деление на 0");
+            }
+        };
+        return doOperation(firstFunction, secondFunction, operation);
+    }
+
 }
