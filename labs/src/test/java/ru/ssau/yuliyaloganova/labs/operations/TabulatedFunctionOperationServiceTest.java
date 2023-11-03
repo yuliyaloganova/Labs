@@ -22,19 +22,14 @@ public class TabulatedFunctionOperationServiceTest {
     TabulatedFunctionOperationService tabulatedFunctionOperationService = new TabulatedFunctionOperationService();
     @Test
     public void testAsPoints() {
-        double[] xValues = {1.0, 2.0, 3.0};
-        double[] yValues = {2.0, 4.0, 6.0};
-        TabulatedFunction function = new ArrayTabulatedFunction(xValues, yValues);//создаем табулированную функцию
+        Point[] array = TabulatedFunctionOperationService.asPoints(func1);
 
-        Point[] expectedPoints = {//ожидаемый массив точек, каждая точка соответствует значениям `x` и `y` функции
-                new Point(1.0, 2.0),
-                new Point(2.0, 4.0),
-                new Point(3.0, 6.0)
-        };
-
-        Point[] actualPoints = TabulatedFunctionOperationService.asPoints(function);//полученный массив точек
-
-        assertArrayEquals(expectedPoints, actualPoints);
+        int i = 0;
+        for (Point point : array) {
+            Assertions.assertEquals(point.x, xValue[i]);
+            Assertions.assertEquals(point.y, yValue1[i]);
+            ++i;
+        }
     }
 
     TabulatedFunctionFactory factory1 = new LinkedListTabulatedFunctionFactory();

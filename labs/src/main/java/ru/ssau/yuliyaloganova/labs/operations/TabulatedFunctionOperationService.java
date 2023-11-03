@@ -26,14 +26,13 @@ public class TabulatedFunctionOperationService {
     }
 
     public static Point[] asPoints(TabulatedFunction tabulatedFunction) {
+        Point[] points = new Point[tabulatedFunction.getCount()];
         int i = 0;
-        int size = tabulatedFunction.getCount();
-        Point[] points = new Point[size];//создаем массив точек `points` размером, соответствующим количеству точек в функции `TabulatedFunction`
-        //проходим по всем точкам функции и записываем каждую точку в массив `points` с индексом `i`
-        for (Point num : tabulatedFunction) {
-            points[i] = num;
-            i++;
+        for (Point point : tabulatedFunction) {
+            points[i] = point;
+            ++i;
         }
+
         return points;//возвращаем массив точек
     }
 
