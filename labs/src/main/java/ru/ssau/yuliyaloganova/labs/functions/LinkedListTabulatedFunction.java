@@ -106,7 +106,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
     }
 
     // Метод getNode возвращает узел списка по его индексу
-    private Node getNode(int index) {
+    Node getNode(int index) {
         if (index < 0 || index >= count) { // если индекс выходит за границы списка, выбрасываем исключение
             throw new IndexOutOfBoundsException("Index out of range: " + index);
         }
