@@ -20,27 +20,21 @@ public class TabulatedFunctionOperationServiceTest {
     LinkedListTabulatedFunction func3 = new LinkedListTabulatedFunction(xValue, yValue1);
     LinkedListTabulatedFunction func4 = new LinkedListTabulatedFunction(xValue,yValue2);
     TabulatedFunctionOperationService tabulatedFunctionOperationService = new TabulatedFunctionOperationService();
-    @Test
-    public void testAsPoints() {
-        double[] xValues = {1.0, 2.0, 3.0};
-        double[] yValues = {2.0, 4.0, 6.0};
-        TabulatedFunction function = new ArrayTabulatedFunction(xValues, yValues);//создаем табулированную функцию
-
-        Point[] expectedPoints = {//ожидаемый массив точек, каждая точка соответствует значениям `x` и `y` функции
-                new Point(1.0, 2.0),
-                new Point(2.0, 4.0),
-                new Point(3.0, 6.0)
-        };
-
-        Point[] actualPoints = TabulatedFunctionOperationService.asPoints(function);//полученный массив точек
-
-        assertArrayEquals(expectedPoints, actualPoints);
-    }
 
     TabulatedFunctionFactory factory1 = new LinkedListTabulatedFunctionFactory();
     TabulatedFunctionOperationService operation1 = new TabulatedFunctionOperationService(factory1);
     TabulatedFunctionOperationService operation2 = new TabulatedFunctionOperationService();
+    @Test
+    public void testAsPoints() {
+        Point[] array = TabulatedFunctionOperationService.asPoints(func1);
 
+        int i = 0;
+        for (Point point : array) {
+            Assertions.assertEquals(point.x, xValue[i]);
+            Assertions.assertEquals(point.y, yValue1[i]);
+            ++i;
+        }
+    }
     @Test
     void plusTest() {
 
@@ -54,13 +48,10 @@ public class TabulatedFunctionOperationServiceTest {
             Assertions.assertEquals(yValue1[i] + yValue2[i], result2.getY(i));
         }
 
-
         TabulatedFunction result3 = operation2.plus(func1, func3);
         for (int i = 0; i < result3.getCount(); i++) {
             Assertions.assertEquals(yValue1[i] + yValue2[i], result3.getY(i));
         }
-
-
     }
 
     @Test
@@ -75,10 +66,44 @@ public class TabulatedFunctionOperationServiceTest {
             Assertions.assertEquals(yValue1[i] - yValue2[i], result2.getY(i));
         }
 
-
         TabulatedFunction result3 = operation2.minus(func1, func3);
         for (int i = 0; i < result3.getCount(); i++) {
             Assertions.assertEquals(yValue1[i] - yValue2[i], result3.getY(i));
+        }
+    }
+    @Test
+    void testmultiply() {
+
+        TabulatedFunction result1 = operation1.multiply(func1, func2);
+        for (int i = 0; i < result1.getCount(); i++) {
+            Assertions.assertEquals(yValue1[i] * yValue2[i], result1.getY(i));
+        }
+
+        TabulatedFunction result2 = operation2.multiply(func3, func4);
+        for (int i = 0; i < result2.getCount(); i++) {
+            Assertions.assertEquals(yValue1[i] * yValue2[i], result2.getY(i));
+        }
+
+        TabulatedFunction result3 = operation2.multiply(func1, func3);
+        for (int i = 0; i < result3.getCount(); i++) {
+            Assertions.assertEquals(yValue1[i] * yValue2[i], result3.getY(i));
+        }
+    }
+    @Test
+    void testdivide() {
+        TabulatedFunction result1 = operation1.divide(func1, func2);
+        for (int i = 0; i < result1.getCount(); i++) {
+            Assertions.assertEquals(yValue1[i] / yValue2[i], result1.getY(i));
+        }
+
+        TabulatedFunction result2 = operation2.divide(func4, func3);
+        for (int i = 0; i < result2.getCount(); i++) {
+            Assertions.assertEquals(yValue1[i] / yValue2[i], result2.getY(i));
+        }
+
+        TabulatedFunction result3 = operation2.divide(func1, func3);
+        for (int i = 0; i < result3.getCount(); i++) {
+            Assertions.assertEquals(yValue1[i] /yValue2[i], result3.getY(i));
         }
     }
 }
