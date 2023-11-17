@@ -71,7 +71,8 @@ public class ArrayTabulatedFunctionTest {
     @Test
     public void testInterpolate() {
         ArrayTabulatedFunction function = createFunction();
-        Assert.assertEquals(4.5, function.interpolate(1.5, 1), 0.0);
+        assertEquals(4.7, function.interpolate(1.7, 2));
+        assertNotEquals(0, function.interpolate(1.7, 2));
     }
 
     @Test
@@ -164,7 +165,7 @@ public class ArrayTabulatedFunctionTest {
 
         try {
             function.getX(10);
-        } catch (IllegalArgumentException exception) {
+        } catch (IndexOutOfBoundsException exception) {
             exceptionThrown = true;
         }
         assertTrue(exceptionThrown);
@@ -176,7 +177,7 @@ public class ArrayTabulatedFunctionTest {
 
         try {
             function.getY(-10);
-        } catch (IllegalArgumentException exception) {
+        } catch (IndexOutOfBoundsException exception) {
             exceptionThrown = true;
         }
         assertTrue(exceptionThrown);
@@ -188,7 +189,7 @@ public class ArrayTabulatedFunctionTest {
 
         try {
             function.setY(13, 10);
-        } catch (IllegalArgumentException exception) {
+        } catch (IndexOutOfBoundsException exception) {
             exceptionThrown = true;
         }
         assertTrue(exceptionThrown);
@@ -212,7 +213,7 @@ public class ArrayTabulatedFunctionTest {
 
         try {
             function.floorIndexOfX(-2);
-        } catch (IllegalArgumentException exception) {
+        } catch (IndexOutOfBoundsException exception) {
             exceptionThrown = true;
         }
         assertTrue(exceptionThrown);

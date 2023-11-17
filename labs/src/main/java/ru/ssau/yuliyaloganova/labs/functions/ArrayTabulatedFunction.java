@@ -48,19 +48,21 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
         return count;
     }
 
-    @Override
+
     public double getX(int index) {
-        if (index < 0 || index >= count) {
+        if (index < 0 || index > count-1) {
             throw new IndexOutOfBoundsException("Index is out of bounds");
+        } else {
+            return xValues[index];
         }
-        return xValues[index];
     }
-    @Override
+
     public double getY(int index) {
-        if (index < 0 || index >= count) {
+        if (index < 0 || index > count-1) {
             throw new IndexOutOfBoundsException("Index is out of bounds");
+        } else {
+            return yValues[index];
         }
-        return yValues[index];
     }
 
     @Override
@@ -84,29 +86,29 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
 
     @Override
     public int indexOfX(double x) {
-        for (int i = 0; i < count; i++) {
-            if (xValues[i] == x) {
-                return i;
-            }
+        int index = 0;
+        while (index <= count - 1) {
+            if (xValues[index] == x) return index;
+            else index++;
         }
-        return -1;
+        throw new NoSuchElementException("The desired value was not found");
     }
 
     @Override
     public int indexOfY(double y) {
-        for (int i = 0; i < count; i++) {
-            if (yValues[i] == y) {
-                return i;
-            }
+        int index = 0;
+        while (index <= count - 1) {
+            if (yValues[index] == y) return index;
+            else index++;
         }
-        return -1;
+        throw new NoSuchElementException("The desired value was not found");
     }
 
     @Override
     protected int floorIndexOfX(double x) {
         for (int i = 0; i < count - 1; ++i) {
             if (x < xValues[0]) { // если x меньше первого элемента
-                return 0; // то возвращаем 0
+                throw new IndexOutOfBoundsException("Index is out of left bounds");
             }
             if (x == xValues[i]) { // если мы нашли x,
                 return i; // возвращаем его индес
@@ -122,18 +124,21 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
     }
 
     @Override
-    public double interpolate(double x, int floorIndex) {
-        if (x<floorIndex && x> floorIndex - 1) {
-            if (count == 1) {
-                return yValues[0];
-            } else {
-                double x0 = xValues[floorIndex];
-                double x1 = xValues[floorIndex + 1];
-                double y0 = yValues[floorIndex];
-                double y1 = yValues[floorIndex + 1];
-                return y0 + (y1 - y0) * (x - x0) / (x1 - x0);
-            }
+    protected double interpolate(double x, int floorIndex) {
+        if (x < floorIndex && x > floorIndex - 1) {
+
+            double leftX = getX(floorIndex - 1);
+            double rightX = getX(floorIndex);
+            double leftY = getY(floorIndex - 1);
+            double rightY = getY(floorIndex);
+            return interpolate(x, leftX, rightX, leftY, rightY);
+
         } else throw new InterpolationException("x is outside the interpolation interval");
+    }
+
+    protected double interpolate(double x, double leftX, double rightX, double leftY, double rightY) {
+        if (count == 1) return yValues[0];
+        else return (leftY + (((rightY - leftY) / (rightX - leftX)) * (x - leftX)));
     }
 
     protected double interpolate(double x) {
