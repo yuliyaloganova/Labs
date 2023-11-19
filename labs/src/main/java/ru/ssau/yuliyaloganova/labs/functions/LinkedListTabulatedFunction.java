@@ -106,7 +106,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
     }
 
     // Метод getNode возвращает узел списка по его индексу
-    Node getNode(int index) {
+    public Node getNode(int index) {
         if (index < 0 || index >= count) { // если индекс выходит за границы списка, выбрасываем исключение
             throw new IndexOutOfBoundsException("Index out of range: " + index);
         }
@@ -181,7 +181,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
     @Override
     public double getY(int index) {
         if (index < 0 && index > count - 1) {
-            throw new IllegalArgumentException("Индекс не прендлежит нужному промежутку");
+            throw new IllegalArgumentException("Индекс не принадлежит нужному промежутку");
         } else {
             return getNode(index).y;
         }
@@ -191,7 +191,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
     // Метод setY изменяет значение функции по индексу
     public void setY(int index, double value) {
         if (index < 0 && index > count - 1) {
-            throw new IllegalArgumentException("Индекс не прендлежит нужному промежутку");
+            throw new IllegalArgumentException("Индекс не принадлежит нужному промежутку");
         } else {
             getNode(index).y = value;
         }
@@ -207,6 +207,8 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         }
         return -1;
     }
+
+
 
     // Метод indexOfY возвращает индекс первого узла с заданным значением функции или -1, если такого узла нет
     public int indexOfY(double y) {
@@ -323,6 +325,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         return new Node(x, count); // если список пуст, возвращаем новый узел с функцией, равной количеству узлов в списке
     }
 
+
     // Метод remove удаляет узел списка с заданным индексом.
     public void remove(int index) {
         if (count == 1) { // Если список содержит только один узел, он удаляется полностью.
@@ -352,6 +355,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
 
     @Override
     public boolean equals(Object o) {
+        if (o == null) return false;
         if (this == o) return true;
         Node node = head;  // Получаем первый узел списка
         if (o.getClass() == o.getClass() && count == ((LinkedListTabulatedFunction)o).getCount()) {
@@ -404,12 +408,13 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
 
             @Override
             public Point next() {
-                if (!hasNext()) {
-                    throw new NoSuchElementException("No more elements in the iterator");
+                if(hasNext()) {
+                    Point point = new Point(node.x, node.y);
+                    node = node.next;
+                    if (node == head) node = null;
+                    return point;
                 }
-                Point point = new Point(node.x, node.y);
-                node = node.next;
-                return point;
+                else throw new NoSuchElementException();
             }
         };
     }

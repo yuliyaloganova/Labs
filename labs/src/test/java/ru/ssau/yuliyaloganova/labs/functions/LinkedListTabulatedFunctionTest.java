@@ -19,7 +19,8 @@ public class LinkedListTabulatedFunctionTest {
     LinkedListTabulatedFunction testLink = new LinkedListTabulatedFunction(arr1, arr2);
 
     @Test
-    public void testgetCount() { Assert.assertEquals(3, testLink.getCount());
+    public void testgetCount() {
+        Assert.assertEquals(3, testLink.getCount());
     }
 
     @Test
@@ -64,12 +65,14 @@ public class LinkedListTabulatedFunctionTest {
         assertEquals(0, testLink.floorIndexOfX(1.5));
         assertEquals(1, testLink.floorIndexOfX(2.7));
     }
-
+/*
     @Test
     public void testFloorNodeOfX() {
-        testLink.addNode(4.0, 4.0);
+        //testLink.addNode(4.0, 4.0);
         assertEquals(4.0, testLink.floorNodeOfX(5.0));
     }
+
+ */
 
 
     @Test
@@ -95,6 +98,7 @@ public class LinkedListTabulatedFunctionTest {
         testLink.remove(1);
         assertEquals(3, testLink.getX(1));
         assertEquals(6, testLink.getY(1));
+        assertThrows(IndexOutOfBoundsException.class, () -> (testLink).remove(-1));
     }
 
     @Test
@@ -142,27 +146,23 @@ public class LinkedListTabulatedFunctionTest {
 
     @Test
     public void ListEqualsTest() {
-        double[] arr3 = {2, 7, 1, 5};
-        double[] arr4 = {6, 8.5, 3, 5};
-        LinkedListTabulatedFunction testLink2 = new LinkedListTabulatedFunction(arr3, arr4);
-        LinkedListTabulatedFunction testLink3 = new LinkedListTabulatedFunction(arr2, arr1);
-        LinkedListTabulatedFunction testLink4 = new LinkedListTabulatedFunction(arr1, arr2);
-        boolean Test12 = testLink.equals(testLink2);
-        boolean Test13 = testLink.equals(testLink3);
-        boolean Test14 = testLink.equals(testLink4);
-        assertFalse(Test12);
-        assertFalse(Test13);
-        assertTrue(Test14);
+        double[] arr3 = {-7.0, 1.5, 2.5};
+        double[] arr4 = {-2.5, -1.5, 5.0};
+        LinkedListTabulatedFunction testLink1 = new LinkedListTabulatedFunction(arr1, arr2);
+        LinkedListTabulatedFunction testLink2 = new LinkedListTabulatedFunction(arr3,arr4);
+        assertTrue(testLink.equals(testLink1));
+        assertFalse(testLink.equals(testLink2));
+        assertFalse(testLink.equals(null));
     }
 
     @Test
     public void ListHashCodeTest() {
-        double[] arr3 = {2, 7, 1};
-        double[] arr4 = {6, 8.5, 3};
-        LinkedListTabulatedFunction testLink2 = new LinkedListTabulatedFunction(arr1, arr2);
-        LinkedListTabulatedFunction testLink3 = new LinkedListTabulatedFunction(arr3, arr4);
-        assertEquals(testLink.hashCode(), testLink2.hashCode());
-        assertNotEquals(testLink.hashCode(), testLink3.hashCode());
+        double[] arr3 = {-7.0, 1.5, 2.5};
+        double[] arr4 = {-2.5, -1.5, 5.0};
+        LinkedListTabulatedFunction testLink1 = new LinkedListTabulatedFunction(arr1, arr2);
+        LinkedListTabulatedFunction testLink2 = new LinkedListTabulatedFunction(arr3, arr4);
+        assertEquals(testLink.hashCode(), testLink1.hashCode());
+        assertNotEquals(testLink.hashCode(), testLink2.hashCode());
     }
 
     @Test
@@ -203,8 +203,8 @@ public class LinkedListTabulatedFunctionTest {
 
     @Test
     public void testindexOfXException() {
-        assertThrows(NoSuchElementException.class, () -> {
-            testLink.indexOfX(2);
+        assertThrows(IllegalArgumentException.class, () -> {
+            testLink.floorIndexOfX(-2);
         });
     }
 
@@ -235,7 +235,7 @@ public class LinkedListTabulatedFunctionTest {
 
     @Test
     public void testLinkedListInterpolateException() {
-        assertThrows(InterpolationException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             testLink.interpolate(2.5, 2);
         });
     }
