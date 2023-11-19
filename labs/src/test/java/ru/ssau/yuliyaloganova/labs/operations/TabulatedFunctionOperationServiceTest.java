@@ -80,12 +80,12 @@ public class TabulatedFunctionOperationServiceTest {
             Assertions.assertEquals(yValue1[i] * yValue2[i], result1.getY(i));
         }
 
-        TabulatedFunction result2 = operation2.multiply(func3, func4);
+        TabulatedFunction result2 = operation2.multiply(func4, func3);
         for (int i = 0; i < result2.getCount(); i++) {
             Assertions.assertEquals(yValue1[i] * yValue2[i], result2.getY(i));
         }
 
-        TabulatedFunction result3 = operation2.multiply(func1, func3);
+        TabulatedFunction result3 = operation2.multiply(func1, func4);
         for (int i = 0; i < result3.getCount(); i++) {
             Assertions.assertEquals(yValue1[i] * yValue2[i], result3.getY(i));
         }
@@ -100,10 +100,10 @@ public class TabulatedFunctionOperationServiceTest {
 
         TabulatedFunction result2 = operation2.divide(func4, func3);
         for (int i = 0; i < result2.getCount(); i++) {
-            Assertions.assertEquals(yValue1[i] / yValue2[i], result2.getY(i));
+            Assertions.assertEquals(yValue2[i] / yValue1[i], result2.getY(i));
         }
 
-        TabulatedFunction result3 = operation2.divide(func1, func3);
+        TabulatedFunction result3 = operation2.divide(func1, func4);
         for (int i = 0; i < result3.getCount(); i++) {
             Assertions.assertEquals(yValue1[i] /yValue2[i], result3.getY(i));
         }
