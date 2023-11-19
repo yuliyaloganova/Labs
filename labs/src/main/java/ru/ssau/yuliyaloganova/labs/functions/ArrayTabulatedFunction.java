@@ -1,15 +1,17 @@
 package ru.ssau.yuliyaloganova.labs.functions;
 
+import java.io.Serial;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
 import ru.ssau.yuliyaloganova.labs.exceptions.InterpolationException;
 import java.util.NoSuchElementException;
+import java.io.Serializable;
 // класс табулированных функций, значения которых хранятся в массиве
-public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
-    private double[] xValues; // приватное поле значений x
-    private double[] yValues; // приватное поле значений y
-    private int count; // приватное поле количества элементов
+public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements Serializable{
+    private transient double[] xValues; // приватное поле значений x
+    private transient double[] yValues; // приватное поле значений y
+    private transient int count; // приватное поле количества элементов
 
     // конструктор
     public ArrayTabulatedFunction(double[] xValues, double[] yValues) {
@@ -240,4 +242,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
             }
         };
     }
+    @Serial
+    private static final long serialVersionUID = 123456789L;
+
 }
