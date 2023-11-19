@@ -10,11 +10,11 @@ import java.text.ParseException;
 import java.util.Locale;
 
 final class FunctionsIO {
-    private FunctionsIO(){
+    private FunctionsIO() {
         throw new UnsupportedOperationException();
     }
 
-    public static void writeTabulatedFunction(BufferedWriter writer, TabulatedFunction function){
+    public static void writeTabulatedFunction(BufferedWriter writer, TabulatedFunction function) {
         PrintWriter printWriter = new PrintWriter(writer);
         printWriter.println(function.getCount());
 
@@ -55,5 +55,11 @@ final class FunctionsIO {
         }
 
         dataOutputStream.flush();
+    }
+
+    public static void serialize(BufferedOutputStream stream, TabulatedFunction function) throws IOException {
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(stream);
+        objectOutputStream.writeObject(function);
+        objectOutputStream.flush();
     }
 }
