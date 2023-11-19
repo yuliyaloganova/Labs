@@ -47,7 +47,7 @@ public class TabulatedFunctionOperationServiceTest {
             assertEquals(yValue1[i] + yValue2[i], result2.getY(i), 0.001);
         }
 
-        TabulatedFunction result3 = operation2.plus(func1, func3);
+        TabulatedFunction result3 = operation2.plus(func1, func4);
         for (int i = 0; i < result3.getCount(); i++) {
             assertEquals(yValue1[i] + yValue2[i], result3.getY(i), 0.001);
         }
@@ -61,9 +61,12 @@ public class TabulatedFunctionOperationServiceTest {
         }
 
         TabulatedFunction result2 = operation2.minus(func4, func3);
-        for (int i = 0; i < result2.getCount(); i++) assertEquals(yValue1[i] - yValue2[i], result2.getY(i));
+        for (int i = 0; i < result2.getCount(); i++) {
+            assertEquals(yValue2[i] - yValue1[i], result2.getY(i));
+        }
 
-        TabulatedFunction result3 = operation2.minus(func1, func3);
+
+        TabulatedFunction result3 = operation2.minus(func1, func4);
         for (int i = 0; i < result3.getCount(); i++) {
             assertEquals(yValue1[i] - yValue2[i], result3.getY(i));
         }
