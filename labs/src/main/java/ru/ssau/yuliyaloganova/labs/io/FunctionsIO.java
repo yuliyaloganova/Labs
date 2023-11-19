@@ -2,6 +2,7 @@ package ru.ssau.yuliyaloganova.labs.io;
 
 import ru.ssau.yuliyaloganova.labs.functions.Point;
 import ru.ssau.yuliyaloganova.labs.functions.TabulatedFunction;
+
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
