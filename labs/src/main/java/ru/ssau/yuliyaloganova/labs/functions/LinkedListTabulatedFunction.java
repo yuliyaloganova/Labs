@@ -1,10 +1,12 @@
 package ru.ssau.yuliyaloganova.labs.functions;
+import java.io.Serial;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.io.Serializable;
 
-public class LinkedListTabulatedFunction extends AbstractTabulatedFunction implements TabulatedFunction {
+public class LinkedListTabulatedFunction extends AbstractTabulatedFunction implements TabulatedFunction, Serializable {
 
     private int count;
     private Node head;
@@ -418,4 +420,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
             }
         };
     }
+
+    @Serial
+    private static final long serialVersionUID = 123456789L;
 }
