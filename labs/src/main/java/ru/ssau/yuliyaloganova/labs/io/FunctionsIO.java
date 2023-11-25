@@ -1,15 +1,17 @@
 package ru.ssau.yuliyaloganova.labs.io;
 
-import ru.ssau.yuliyaloganova.labs.functions.Point;
 import ru.ssau.yuliyaloganova.labs.functions.TabulatedFunction;
 import ru.ssau.yuliyaloganova.labs.functions.factory.TabulatedFunctionFactory;
 
 import java.io.*;
 import java.text.NumberFormat;
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.Locale;
+import java.io.PrintWriter;
 
-final class FunctionsIO {
+public final class FunctionsIO {
     private FunctionsIO(){
         throw new UnsupportedOperationException();
     }
@@ -18,8 +20,10 @@ final class FunctionsIO {
         PrintWriter printWriter = new PrintWriter(writer);
         printWriter.println(function.getCount());
 
-        for (Point point : function) {
-            printWriter.printf("%f %f\n", point.x, point.y);
+        for (int i = 0; i < function.getCount(); i++) {
+            double x = function.getX(i);
+            double y = function.getY(i);
+            printWriter.printf("%f %f%n", x, y);
         }
         printWriter.flush();
     }
@@ -32,8 +36,8 @@ final class FunctionsIO {
         NumberFormat numberFormat = NumberFormat.getInstance(Locale.forLanguageTag("ru"));//объект форматирования дробных чисел
 
         for (int i = 0; i < cnt; i++) { //пробегаемся cnt раз
-            String line = reader.readLine();
-            String[] values = line.split(" ");//разбиение строки по пробелу
+            //String line = reader.readLine();
+            String[] values = reader.readLine().split(" ");//разбиение строки по пробелу
             try {
                 xValues[i] = numberFormat.parse(values[0]).doubleValue();
                 yValues[i] = numberFormat.parse(values[1]).doubleValue();
@@ -49,9 +53,11 @@ final class FunctionsIO {
         DataOutputStream dataOutputStream = new DataOutputStream(outputStream);
         dataOutputStream.writeInt(function.getCount());
 
-        for (Point point : function) {
-            dataOutputStream.writeDouble(point.x);
-            dataOutputStream.writeDouble(point.y);
+        for (int i = 0; i < function.getCount(); i++) {
+            double x = function.getX(i);
+            double y = function.getY(i);
+            dataOutputStream.writeDouble(x);
+            dataOutputStream.writeDouble(y);
         }
 
         dataOutputStream.flush();

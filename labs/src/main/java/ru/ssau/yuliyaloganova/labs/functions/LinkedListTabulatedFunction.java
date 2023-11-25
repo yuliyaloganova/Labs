@@ -13,7 +13,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
 
 
     // Вложенный класс Node описывает узел списка
-    static class Node {
+    static class Node implements Serializable{
         public double x,y;
         public Node next;
         public Node prev;
@@ -30,6 +30,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
             str1.append("(").append(x).append("; ").append(y).append(")");
             return str1.toString();
         }
+
         @Override
         public boolean equals(Object o) {
             if (this == o)
@@ -342,6 +343,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         }
         count--; // Уменьшаем кол-во элементов
     }
+    /*
     @Override
     public String toString() {
         StringBuilder str1 = new StringBuilder(); // создаем объект StringBuilder для построения строки
@@ -354,6 +356,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         str1.delete(str1.length() - 2, str1.length()); // удаляем последнюю запятую и пробел
         return str1.toString();
     }
+     */
 
     @Override
     public boolean equals(Object o) {

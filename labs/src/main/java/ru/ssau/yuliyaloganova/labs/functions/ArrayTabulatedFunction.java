@@ -13,6 +13,9 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     private transient double[] yValues; // приватное поле значений y
     private transient int count; // приватное поле количества элементов
 
+    @Serial
+    private static final long serialVersionUID = 123456789L;
+
     // конструктор
     public ArrayTabulatedFunction(double[] xValues, double[] yValues) {
         if (xValues.length < 2 || yValues.length < 2) {
@@ -242,7 +245,6 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
             }
         };
     }
-    @Serial
-    private static final long serialVersionUID = 123456789L;
+
 
 }

@@ -139,10 +139,13 @@ public class LinkedListTabulatedFunctionTest {
         assertEquals(node, nodeCopy);
     }
 
+    /*
     @Test
     public void ListToStringtest(){
         assertEquals("(1.0; 4.0), (2.0; 5.0), (3.0; 6.0)", testLink.toString());
     }
+
+     */
 
     @Test
     public void ListEqualsTest() {
@@ -258,5 +261,12 @@ public class LinkedListTabulatedFunctionTest {
             node=node.next;
         }
 
+
     }
+
+    @Test
+    public void TesttoStringBuilderLink() {
+        assertEquals(testLink.toString(), "LinkedListTabulatedFunction size = 3\n[1.0; 4.0]\n[2.0; 5.0]\n[3.0; 6.0]\n");
+    }
+
 }
