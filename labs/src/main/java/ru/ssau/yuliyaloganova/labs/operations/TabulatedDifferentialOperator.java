@@ -1,5 +1,6 @@
 package ru.ssau.yuliyaloganova.labs.operations;
 
+import ru.ssau.yuliyaloganova.labs.concurrent.SynchronizedTabulatedFunction;
 import ru.ssau.yuliyaloganova.labs.functions.factory.TabulatedFunctionFactory;
 import ru.ssau.yuliyaloganova.labs.functions.Point;
 import ru.ssau.yuliyaloganova.labs.functions.TabulatedFunction;
@@ -42,4 +43,13 @@ public class TabulatedDifferentialOperator implements DifferentialOperator<Tabul
         return factory.create(xValue, yValue);
 
     }
+
+    public SynchronizedTabulatedFunction deriveSynchronously (TabulatedFunction function){
+        SynchronizedTabulatedFunction synchronizedFunction = (function instanceof SynchronizedTabulatedFunction) ?
+                (SynchronizedTabulatedFunction) function :
+                new SynchronizedTabulatedFunction(function);
+
+        return synchronizedFunction.doSynchronously(func -> new SynchronizedTabulatedFunction(derive(func)));
+    }
+
 }
