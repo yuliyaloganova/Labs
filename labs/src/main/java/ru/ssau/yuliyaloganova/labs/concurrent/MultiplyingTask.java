@@ -7,12 +7,15 @@ public class MultiplyingTask implements Runnable {
     public MultiplyingTask(TabulatedFunction tabulatedFunction) {
         this.function = tabulatedFunction;
     }
+
     @Override
     public void run() {
         for (int i = 0; i < function.getCount(); i++) {
-            function.setY(i, function.getY(i) * 2);
+            synchronized (function) {
+                function.setY(i, function.getY(i) * 2);
+            }
+            String thread = Thread.currentThread().getName();
+            System.out.println("thread " + thread + "has completed the task.");
         }
-        String thread = Thread.currentThread().getName();
-        System.out.println("thread " + thread + "has completed the task.");
     }
 }
