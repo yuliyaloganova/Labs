@@ -10,8 +10,8 @@ public class TabulatedFunctionFileReader {
     public static void main(String[] args) {
         try {
             //файловые символьные потоки чтения
-            try (BufferedReader arrayReader = new BufferedReader(new FileReader("input/function.txt"));
-                 BufferedReader linkedReader = new BufferedReader(new FileReader("input/function.txt"))) {
+            try (BufferedReader arrayReader = new BufferedReader(new FileReader("C:/Users/Вячеслав/IdeaProjects/Labs/labs/input/function.txt"));
+                 BufferedReader linkedReader = new BufferedReader(new FileReader("C:/Users/Вячеслав/IdeaProjects/Labs/labs/input/function.txt"))) {
                 //получение объектов функций
                 TabulatedFunction arrayTabulatedFunction = FunctionsIO.readTabulatedFunction(arrayReader, new ArrayTabulatedFunctionFactory());
                 TabulatedFunction linkedListTabulatedFunction = FunctionsIO.readTabulatedFunction(linkedReader, new ru.ssau.yuliyaloganova.labs.functions.factory.LinkedListTabulatedFunctionFactory());

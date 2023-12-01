@@ -11,7 +11,7 @@ import ru.ssau.yuliyaloganova.labs.functions.TabulatedFunction;
 public class ArrayTabulatedFunctionSerialization {
     public static void main(String[] args){
         try {
-            try (BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream("output/serialized array function.bin"))) {
+            try (BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream("C:/Users/Вячеслав/IdeaProjects/Labs/labs/output/serialized array function.bin"))) {
                 double[] xValues = {1, 2, 3};
                 double[] yValues = {1.5, 2.5, 3.5};
 
@@ -31,7 +31,7 @@ public class ArrayTabulatedFunctionSerialization {
             e.printStackTrace();
         }
         try {
-            try (BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream("input/serialized array function.bin"))) {
+            try (BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream("C:/Users/Вячеслав/IdeaProjects/Labs/labs/output/serialized array function.bin"))) {
                 System.out.println(FunctionsIO.deserialize(bufferedInputStream));
                 System.out.println(FunctionsIO.deserialize(bufferedInputStream));
                 System.out.println(FunctionsIO.deserialize(bufferedInputStream));

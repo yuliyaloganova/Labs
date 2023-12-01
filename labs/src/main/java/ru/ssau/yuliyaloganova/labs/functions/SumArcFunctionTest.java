@@ -13,8 +13,8 @@ public class SumArcFunctionTest {
     @Test
     public void TestApply() {
         assertEquals(Math.PI / 2, sumFunction.apply(0), delta);
-        assertEquals(0, sumFunction.apply(1), delta);
-        assertEquals(Math.PI, sumFunction.apply(-1), delta);
+        assertEquals(Math.PI/2, sumFunction.apply(1), delta);
+        assertEquals(Math.PI/2, sumFunction.apply(-1), delta);
 
     }
 }
