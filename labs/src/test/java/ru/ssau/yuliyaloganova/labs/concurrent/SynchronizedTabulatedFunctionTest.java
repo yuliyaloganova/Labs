@@ -8,9 +8,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-
-import static org.junit.jupiter.api.Assertions.*;
-
 class SynchronizedTabulatedFunctionTest {
     double[] xValue = {1, 3, 5, 7, 9};
     double[] yValue = {2, 4, 6, 8, 10};
@@ -77,6 +74,18 @@ class SynchronizedTabulatedFunctionTest {
             ++i;
         }
 
+    }
+
+    @Test
+    public void doSynchronouslyTest() {
+        SynchronizedTabulatedFunction.Operation<Double> operation = func -> {
+            double sum = 0;
+            for (Point el : function)
+                sum += el.y;
+            return sum;
+        };
+        double sumOfY = testList.doSynchronously(operation);
+        assertEquals(30, sumOfY);
     }
 
 }
