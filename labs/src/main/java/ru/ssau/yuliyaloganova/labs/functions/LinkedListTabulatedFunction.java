@@ -1,4 +1,5 @@
 package ru.ssau.yuliyaloganova.labs.functions;
+
 import java.io.Serial;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -8,13 +9,15 @@ import java.io.Serializable;
 
 public class LinkedListTabulatedFunction extends AbstractTabulatedFunction implements TabulatedFunction, Serializable {
 
+    @Serial
+    private static final long serialVersionUID = 123456789L;
     private int count;
     private Node head;
 
 
     // Вложенный класс Node описывает узел списка
-    static class Node implements Serializable{
-        public double x,y;
+    static class Node implements Serializable {
+        public double x, y;
         public Node next;
         public Node prev;
 
@@ -24,6 +27,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
             this.next = null;
             this.prev = null;
         }
+
 
         public String toString() {
             StringBuilder str1 = new StringBuilder();
@@ -37,11 +41,11 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
                 return true;
 
             if (o == null || getClass() != o.getClass())
-               return false;
+                return false;
 
             return ((o != null) && (o.getClass() == this.getClass())
-                    && (x == ((LinkedListTabulatedFunction.Node)o).x)
-                    && (y == ((LinkedListTabulatedFunction.Node)o).y));
+                    && (x == ((LinkedListTabulatedFunction.Node) o).x)
+                    && (y == ((LinkedListTabulatedFunction.Node) o).y));
         }
 
 
@@ -51,6 +55,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
             result = 31 * result + Double.hashCode(y);
             return result;
         }
+
         @Override
         public Object clone() {
             Node clone = new Node(x, y);
@@ -134,27 +139,24 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
             addNode(x, y);
         } else {
             Node temp = head.next;
-            for (int i = 0; temp != head ; temp = temp.next) {
-                if(temp.x == x) {
+            for (int i = 0; temp != head; temp = temp.next) {
+                if (temp.x == x) {
                     temp.y = y;
                     temp = head;
                     ++count;
-                }
-                else if(x >head.prev.x) {
+                } else if (x > head.prev.x) {
                     Node newN = new Node(x, y);
                     head.prev.next = newN;
                     head.prev = newN;
                     temp = head;
                     ++count;
-                }
-                else if (x < temp.x && x > temp.prev.x) {
+                } else if (x < temp.x && x > temp.prev.x) {
                     Node newN = new Node(x, y);
                     temp.prev.next = newN;
                     temp.prev = newN;
                     temp = head;
                     ++count;
-                }
-                else if (x < head.x) {
+                } else if (x < head.x) {
                     Node newN = new Node(x, y);
                     head.prev.next = newN;
                     head.prev = newN;
@@ -210,7 +212,6 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         }
         return -1;
     }
-
 
 
     // Метод indexOfY возвращает индекс первого узла с заданным значением функции или -1, если такого узла нет
@@ -363,8 +364,8 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         if (o == null) return false;
         if (this == o) return true;
         Node node = head;  // Получаем первый узел списка
-        if (o.getClass() == o.getClass() && count == ((LinkedListTabulatedFunction)o).getCount()) {
-            Node othernode = ((LinkedListTabulatedFunction)o).getNode(0); // Получаем первый узел другого списка
+        if (o.getClass() == o.getClass() && count == ((LinkedListTabulatedFunction) o).getCount()) {
+            Node othernode = ((LinkedListTabulatedFunction) o).getNode(0); // Получаем первый узел другого списка
             // Сравниваем каждый узел текущего списка с соответствующим узлом другого списка
             do {
                 if (!node.equals(othernode)) return false;
@@ -386,6 +387,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         result = result * 31 + head.prev.hashCode(); // вычисляем хеш-код для последнего узла и добавляем его к результату
         return result;
     }
+
     @Override
     public Object clone() {
         double[] xValues = new double[count];
@@ -413,17 +415,15 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
 
             @Override
             public Point next() {
-                if(hasNext()) {
+                if (hasNext()) {
                     Point point = new Point(node.x, node.y);
                     node = node.next;
                     if (node == head) node = null;
                     return point;
-                }
-                else throw new NoSuchElementException();
+                } else throw new NoSuchElementException();
             }
         };
     }
 
-    @Serial
-    private static final long serialVersionUID = 123456789L;
+
 }
