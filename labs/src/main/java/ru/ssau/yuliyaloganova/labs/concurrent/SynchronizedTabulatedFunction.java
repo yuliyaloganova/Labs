@@ -65,7 +65,7 @@ public class SynchronizedTabulatedFunction implements TabulatedFunction {
         synchronized (delegation){
             Point[] copy= TabulatedFunctionOperationService.asPoints(delegation);
             return new Iterator<Point>() {
-                int temp=0;
+                int temp = 0;
                 @Override
                 public boolean hasNext() {
                     return (temp < copy.length);
@@ -75,7 +75,7 @@ public class SynchronizedTabulatedFunction implements TabulatedFunction {
                 public Point next() {
                     Point point;
                     if(hasNext()) {
-                        point=copy[temp++];
+                        point = copy[temp++];
                     }
                     else throw new NoSuchElementException();
                     return point;
