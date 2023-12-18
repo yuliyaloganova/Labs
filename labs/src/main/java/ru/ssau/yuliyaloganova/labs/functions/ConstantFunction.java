@@ -1,4 +1,7 @@
 package ru.ssau.yuliyaloganova.labs.functions;
+import ru.ssau.yuliyaloganova.labs.ui.Functions;
+
+
 
 //класс константных функций
 public class ConstantFunction implements MathFunction {
@@ -18,13 +21,6 @@ public class ConstantFunction implements MathFunction {
     //геттер, возвращающий значение константы
     public double getConstant() {
         return constant;
-    }
-}
-
-//Класс ZeroFunction устанавливает константу равной 0, UnitFunction - 1
-class ZeroFunction extends ConstantFunction {
-    public ZeroFunction() {
-        super(0); //вызывает конструктор суперкласса со значением 0
     }
 }
 

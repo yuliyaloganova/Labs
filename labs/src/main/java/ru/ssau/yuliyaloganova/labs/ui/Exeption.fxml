@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="140.0" prefWidth="300.0" styleClass="exception" stylesheets="@style.css"
+            xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="ru.ssau.yuliyaloganova.labs.ui.ExceptionController">
+    <children>
+        <Pane prefHeight="58.0" prefWidth="315.0" styleClass="exception-header" stylesheets="@style.css"
+              AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="-1.0">
+            <children>
+                <Circle fill="RED" layoutX="38.0" layoutY="29.0" radius="18.0" stroke="BLACK" strokeType="INSIDE"/>
+                <FontAwesomeIconView fill="WHITE" glyphName="TIMES" layoutX="26.0" layoutY="37.0" size="25"
+                                     textAlignment="CENTER" wrappingWidth="23.99993896484375"/>
+                <Text layoutX="72.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ERROR"
+                      wrappingWidth="228.4000244140625">
+                    <font>
+                        <Font name="Inria serif" size="19.0"/>
+                    </font>
+                </Text>
+            </children>
+        </Pane>
+        <Text fx:id="warningText" layoutX="36.0" layoutY="101.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text"
+              wrappingWidth="228.4000244140625" AnchorPane.bottomAnchor="32.482421875" AnchorPane.leftAnchor="36.0"
+              AnchorPane.rightAnchor="33.5999755859375" AnchorPane.topAnchor="81.576171875">
+            <font>
+                <Font size="18.0"/>
+            </font>
+        </Text>
+    </children>
+</AnchorPane>

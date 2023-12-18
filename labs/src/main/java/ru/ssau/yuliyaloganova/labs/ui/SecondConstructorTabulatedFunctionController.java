@@ -22,6 +22,8 @@ import java.util.*;
 
 import java.lang.Class;
 
+import static ru.ssau.yuliyaloganova.labs.ui.UIException.showException;
+
 public class SecondConstructorTabulatedFunctionController implements Initializable {
 
     @FXML
@@ -76,14 +78,14 @@ public class SecondConstructorTabulatedFunctionController implements Initializab
             if (size<2) throw new NumberFormatException();
         }
         catch (NumberFormatException e){
-            UIException.showException("Некорректный ввод!");
+            showException("Некорректный ввод!");
             sizeTextField.clear();
         }
     }
 
     @FXML
     void toCreateFunction(ActionEvent event) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, IOException {
-        Set<Class<?>> classes = new Reflections("functions").getTypesAnnotatedWith(Functions.class);
+        Set<Class<?>> classes = new Reflections("C:/Users/polik/IdeaProjects/Labs/labs/src/main/java/ru/ssau/yuliyaloganova/labs/ui/functions").getTypesAnnotatedWith(Functions.class);
 
         Map<String, MathFunction> map = new HashMap<>();
         for(Class<?> curr_class : classes){
@@ -98,16 +100,16 @@ public class SecondConstructorTabulatedFunctionController implements Initializab
             stage.close();
         }
         catch (ArrayIsNotSortedException e) {
-            UIException.showException("Заданы некорректные диапазоны!");
+            showException("Заданы некорректные диапазоны!");
         }
         catch (ArithmeticException e){
-            UIException.showException("Функция неопределена на данном множестве точек!");
+            showException("Функция не определена на данном множестве точек!");
         }
         catch (NumberFormatException e){
-            UIException.showException("Некорректный ввод!");
+            showException("Некорректный ввод!");
         }
         catch (IllegalArgumentException e){
-            UIException.showException("Количество точек должно быть >=2!");
+            showException("Количество точек должно быть >=2!");
         }
     }
 

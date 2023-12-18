@@ -94,6 +94,23 @@ public class LinkedListTabulatedFunctionTest {
     }
 
     @Test
+    void remove() {
+
+        System.out.println(testLink.toString());
+
+        testLink.remove(2);
+        assertEquals(testLink.getX(2), 8);
+        assertEquals(testLink.getY(2), 0.23);
+
+        System.out.println(testLink.toString());
+
+        testLink.remove(0);
+        assertEquals(testLink.leftBound(), 2);
+        assertEquals(testLink.getY(0), 3.5);
+
+        System.out.println(testLink.toString());
+    }
+   /* @Test
     public void testRemove() {
         testLink.remove(1);
         assertEquals(3, testLink.getX(1));
@@ -106,7 +123,7 @@ public class LinkedListTabulatedFunctionTest {
         testLink.remove(0);
         assertEquals(2, testLink.getX(0));
         assertEquals(5, testLink.getY(0));
-    }
+    }*/
 
     @Test
     public void toStringTest() {

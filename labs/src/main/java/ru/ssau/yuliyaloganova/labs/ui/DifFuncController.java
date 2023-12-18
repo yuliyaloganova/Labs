@@ -29,7 +29,7 @@ public class DifFuncController implements Initializable {
     public TableColumn<TablePoint, Double> xColumn;
     public TableColumn<TablePoint, Double> yColumn;
     public Button saveButton;
-    public Button integrationButton;
+
 
     @FXML
     TableView<TablePoint> diffFuncTable;
@@ -52,7 +52,7 @@ public class DifFuncController implements Initializable {
             }
 
             saveButton.setVisible(true);
-            integrationButton.setVisible(true);
+
         }
         catch (NullPointerException e){
             UIException.showException("Заполните таблицу!");
@@ -68,7 +68,7 @@ public class DifFuncController implements Initializable {
         yColumn.setCellValueFactory(new PropertyValueFactory<>("y"));
 
         saveButton.setVisible(false);
-        integrationButton.setVisible(false);
+
 
     }
 
@@ -78,9 +78,4 @@ public class DifFuncController implements Initializable {
 
     }
 
-    public void toIntegrate(ActionEvent event) throws IOException {
-
-        IntegrationController controller = WindowOpener.openWindow("ui/Integration.fxml", "Интегрирование", 320, 240).getController();
-        controller.setFunction(function);
-    }
 }

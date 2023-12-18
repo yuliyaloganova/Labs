@@ -2,8 +2,9 @@ package ru.ssau.yuliyaloganova.labs.functions;
 
 import ru.ssau.yuliyaloganova.labs.exceptions.ArrayIsNotSortedException;
 import ru.ssau.yuliyaloganova.labs.exceptions.DifferentLengthOfArraysException;
+import java.io.Serializable;
 
-public abstract class AbstractTabulatedFunction implements TabulatedFunction {
+public abstract class AbstractTabulatedFunction implements TabulatedFunction , Serializable {
     protected int count;
 
     protected abstract int floorIndexOfX(double x);

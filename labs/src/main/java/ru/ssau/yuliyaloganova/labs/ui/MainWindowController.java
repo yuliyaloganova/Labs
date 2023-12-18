@@ -27,7 +27,7 @@ public class MainWindowController {
     private Text textLab;
 
     public void functionsOperations(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("ui/SimpleOperations.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("ru/ssau/yuliyaloganova/labs/ui/SimpleOperations.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root, 1200, 752);
         Stage stage = new Stage();
@@ -41,7 +41,7 @@ public class MainWindowController {
 
     public void diffFunction(ActionEvent event) throws IOException {
 
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("ui/DiffFunction.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("ru/ssau/yuliyaloganova/labs/ui/DifFunc.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root, 940, 750);
         Stage stage = new Stage();
@@ -55,7 +55,7 @@ public class MainWindowController {
     }
 
     public void settings(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("ui/Settings.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("ru/ssau/yuliyaloganova/labs/ui/Settings.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root, 400, 350);
         Stage stage = new Stage();
@@ -67,18 +67,4 @@ public class MainWindowController {
         stage.show();
     }
 
-    public void chart(ActionEvent event) throws IOException {
-
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("ui/Chart.fxml"));
-        Parent root = loader.load();
-        Scene scene = new Scene(root, 1200, 800);
-        Stage stage = new Stage();
-        stage.setResizable(false);
-        stage.initModality(Modality.APPLICATION_MODAL);
-
-        stage.setScene(scene);
-        stage.setTitle("Графики");
-        stage.show();
-
-    }
 }

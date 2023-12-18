@@ -33,7 +33,7 @@ public class TableController implements Initializable, Displayable {
     public Button saveButton;
     public Button loadButton;
     public Button changeButton;
-    public Button integrateButton;
+    //public Button integrateButton;
     @FXML
     private Button functionButton;
 
@@ -56,7 +56,7 @@ public class TableController implements Initializable, Displayable {
 
     public void onFunctionCreation(ActionEvent event) throws IOException {
 
-        FXMLLoader loader = WindowOpener.openWindow("ui/SecondConstructorTabulatedFunction.fxml", "Создание функции", 900, 600);
+        FXMLLoader loader = WindowOpener.openWindow("ru/ssau/yuliyaloganova/labs/ui/SecondConstructorTabulatedFunction.fxml", "Создание функции", 900, 600);
         SecondConstructorTabulatedFunctionController controller = loader.getController();
         controller.setMainController(this);
 
@@ -65,8 +65,8 @@ public class TableController implements Initializable, Displayable {
     public void tableCreation(ActionEvent event) throws IOException {
 
 
-        FXMLLoader loader = WindowOpener.openWindow("ui/FirstConstructorTabulatedFunction.fxml", "Создание функции", 900, 600);
-        FirstConstructorTabulatedFunctionController controller = loader.getController();
+        FXMLLoader loader = WindowOpener.openWindow("ru/ssau/yuliyaloganova/labs/ui/FirstConstructorTabulatedFunc.fxml", "Создание функции", 900, 600);
+        FirstConstructorTabulatedFuncController controller = loader.getController();
         controller.setMainController(this);
 
     }
@@ -79,11 +79,11 @@ public class TableController implements Initializable, Displayable {
 
         for (int i = 0; i < function.getCount(); i++) {
             table.getItems().add(new TablePoint(function.getX(i), function.getY(i)));
+
         }
 
         saveButton.setVisible(true);
         changeButton.setVisible(true);
-        integrateButton.setVisible(true);
 
 
     }
@@ -111,7 +111,6 @@ public class TableController implements Initializable, Displayable {
         if (table.getItems().isEmpty()){
             saveButton.setVisible(false);
             changeButton.setVisible(false);
-            integrateButton.setVisible(false);
         }
     }
 
@@ -127,7 +126,6 @@ public class TableController implements Initializable, Displayable {
 
         saveButton.setVisible(false);
         changeButton.setVisible(false);
-        integrateButton.setVisible(false);
 
         xColumn.setCellValueFactory(new PropertyValueFactory<>("x"));
         yColumn.setCellValueFactory(new PropertyValueFactory<>("y"));
@@ -165,7 +163,7 @@ public class TableController implements Initializable, Displayable {
     public void changeTable(ActionEvent event) throws IOException {
 
 
-        FXMLLoader loader = WindowOpener.openWindow("ui/FunctionChange.fxml", "Редактирование", 400, 400);
+        FXMLLoader loader = WindowOpener.openWindow("ru/ssau/yuliyaloganova/labs/ui/FunctionChange.fxml", "Редактирование", 400, 400);
         FunctionChangeController controller = loader.getController();
         controller.setMainController(this);
 
@@ -173,11 +171,5 @@ public class TableController implements Initializable, Displayable {
 
     }
 
-    public void toIntegrate(ActionEvent event) throws IOException {
-
-        IntegrationController controller = WindowOpener.openWindow("ui/Integration.fxml", "Интегрирование", 320, 240).getController();
-        controller.setFunction(function);
-
-    }
 
 }

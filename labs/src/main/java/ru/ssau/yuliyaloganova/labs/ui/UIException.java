@@ -13,7 +13,7 @@ public class UIException {
 
     static public void showException(String warn) throws IOException {
 
-        FXMLLoader loader = new FXMLLoader(UIException.class.getClassLoader().getResource("ru/ssau/yuliyaloganova/labs/ui/Exception.fxml"));
+        FXMLLoader loader = new FXMLLoader(UIException.class.getClassLoader().getResource("C:/Users/polik/IdeaProjects/Labs/labs/src/main/java/ru/ssau/yuliyaloganova/labs/ui/Exception.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root, 300, 140);
         Stage stage = new Stage();
